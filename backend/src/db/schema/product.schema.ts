@@ -1,4 +1,4 @@
-import {doublePrecision, integer, pgTable, varchar} from "drizzle-orm/pg-core";
+import {doublePrecision, integer, pgTable, timestamp, varchar} from "drizzle-orm/pg-core";
 
 export const productsTable = pgTable("products", {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
@@ -6,5 +6,8 @@ export const productsTable = pgTable("products", {
     description: varchar({length: 255}),
     image: varchar({length: 255}),
     price: doublePrecision().notNull(),
-    quantity: integer().default(0)
+    quantity: integer().default(0),
+    createdAt: timestamp("created_at", {withTimezone: true}).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", {withTimezone: true}).defaultNow().notNull(),
+
 });
