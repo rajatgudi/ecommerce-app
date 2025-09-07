@@ -20,12 +20,17 @@
     // Allow emitting output
     "isolatedModules": true,
     // Required for using ESM modules
+    "incremental": true,
+    "tsBuildInfoFile": "./dist/.tsbuildinfo",
     "baseUrl": ".",
     // Allow absolute imports relative to project root
     "paths": {
       "*": [
         "node_modules/*"
       ]
-    }
-  }
+    },
+    "types": ["node"]
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist", "drizzle"]
 }
