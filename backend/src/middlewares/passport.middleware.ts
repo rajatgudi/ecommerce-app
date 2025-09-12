@@ -43,9 +43,9 @@ passport.use(new LocalStrategy({
 }))
 
 passport.use(<passport.Strategy>new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID ?? "544016951454-770vsgub8e41uu74k2hu4oob5td66ar1.apps.googleusercontent.com",
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "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",
-    callbackURL: process.env.GOOGLE_CALLBACK_URL ?? "http://localhost:3000/api/v1/google/callback",
+    clientID: process.env.GOOGLE_CLIENT_ID ?? "",
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+    callbackURL: process.env.GOOGLE_CALLBACK_URL ?? "",
 }, async (accessToken: string, refreshToken: string, profile: Profile, done: VerifyCallback) => {
     try {
         console.log(accessToken, refreshToken)
