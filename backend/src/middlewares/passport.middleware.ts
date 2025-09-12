@@ -8,11 +8,14 @@ import {Strategy as GoogleStrategy} from "passport-google-oauth20"
 import bcrypt from "bcryptjs";
 
 passport.serializeUser((user, done) => {
+    console.log('serializeUser', user)
+
     done(null, user);
 })
 passport.deserializeUser(async (id, done) => {
     try {
         const [user] = await db.select().from(usersTable).where(eq(usersTable.id, id)).limit(1)
+        console.log('deserializeUser', user)
         done(null, user ?? null)
     } catch
         (err) {
@@ -39,16 +42,17 @@ passport.use(new LocalStrategy({
     }
 }))
 
-passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID ?? "",
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
-    callbackURL: process.env.GOOGLE_CALLBACK_URL ?? "/auth/google/callback"
+passport.use(<passport.Strategy>new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID ?? "544016951454-770vsgub8e41uu74k2hu4oob5td66ar1.apps.googleusercontent.com",
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "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",
+    callbackURL: process.env.GOOGLE_CALLBACK_URL ?? "http://localhost:3000/api/v1/google/callback",
 }, async (accessToken: string, refreshToken: string, profile: Profile, done: VerifyCallback) => {
     try {
         console.log(accessToken, refreshToken)
 
         const email = profile.emails?.[0]?.value
         if (!email) return done(new Error("Google account has no email"), null)
+        console.log('profile', profile)
 
         const [existingUser] = await db.select().from(usersTable).where(eq(usersTable.email, email)).limit(1)
         if (existingUser) {
