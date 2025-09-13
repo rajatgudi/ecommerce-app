@@ -33,7 +33,7 @@ export default function Page() {
     })
     console.log('errors', errors)
 
-    const onSubmit = (data: any) => {
+    const onSubmit = (data: { name: string, email: string, password: string }) => {
         console.log(data);
         const {name, email, password} = data;
         mutation.mutate({

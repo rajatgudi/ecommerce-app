@@ -31,7 +31,7 @@ export default function Page() {
         resolver: zodResolver(schema)
 
     })
-    const handleResetPassword = (data: any) => {
+    const handleResetPassword = (data: { password: string }) => {
         console.log(data);
         const {password} = data;
         mutation.mutate({

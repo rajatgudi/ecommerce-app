@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import {useEffect, useState} from "react";
 import {parseTokenFromUrl} from "@/utils";
 import {getUserProfile} from "@/services/auth.sevices";
@@ -18,6 +17,24 @@ export default function Home() {
             router.push("/login");
         }
     }, [isAuthenticated, router]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const fetchUserProfile = (token: string) => {
+        // Fetch protected profile
+        getUserProfile(token)
+            .then((res) => {
+                console.log("user", res.data);
+                setAuth(res.data, token)
+                setError("");
+            })
+            .catch((err) => {
+                setAuth(null, token);
+                setError(err.response?.data?.message || "Failed to fetch profile");
+                // Possibly token expired — remove it
+                if (typeof window !== "undefined") {
+                    window.localStorage.removeItem("accessToken");
+                }
+            });
+    }
 
     useEffect(() => {
         if (typeof window === "undefined") return;
@@ -40,56 +57,40 @@ export default function Home() {
             setIsAuthenticated(true)
 
         }
-    }, []);
+    }, [fetchUserProfile, setIsAuthenticated, setToken]);
 
-    const fetchUserProfile = (token: string) => {
-        // Fetch protected profile
-        getUserProfile(token)
-            .then((res) => {
-                console.log("user", res.data);
-                setAuth(res.data, token)
-                setError("");
-            })
-            .catch((err) => {
-                setAuth(null, token);
-                setError(err.response?.data?.message || "Failed to fetch profile");
-                // Possibly token expired — remove it
-                if (typeof window !== "undefined") {
-                    window.localStorage.removeItem("accessToken");
-                }
-            });
-    }
 
     if (!isAuthenticated)
         return null
     return (
-        <div>
-            <AuthWrapper><h1 className={"text-xl   text-blue-800     "}>Hello, Welcome to Dashboard!</h1>
-                <h3>Google login</h3>
+        <AuthWrapper>
 
-                {JSON.stringify(isAuthenticated)}
-                {token && (
-                    <>
+            <h1 className={"text-xl   text-blue-800     "}>Hello, Welcome to Dashboard!</h1>
+            <h3>Google login</h3>
 
-                        {user ? (
-                            <div>
-                                <h3>Profile</h3>
-                                <p>Name: {user?.name}</p>
-                                <p>Sub (id): {user.id}</p>
-                            </div>
-                        ) : (
-                            <p>Loading profile...</p>
-                        )}
-                    </>
-                )}
+            {JSON.stringify(isAuthenticated)}
+            {token && (
+                <>
 
-                {error && (
-                    <div style={{color: "red"}}>
-                        <p>Error: {error}</p>
-                    </div>
-                )}
+                    {user ? (
+                        <div>
+                            <h3>Profile</h3>
+                            <p>Name: {user?.name}</p>
+                            <p>Sub (id): {user.id}</p>
+                        </div>
+                    ) : (
+                        <p>Loading profile...</p>
+                    )}
+                </>
+            )}
 
-            </AuthWrapper>
-        </div>
+            {error && (
+                <div style={{color: "red"}}>
+                    <p>Error: {error}</p>
+                </div>
+            )}
+
+        </AuthWrapper>
+
     );
 }

@@ -2,6 +2,8 @@
 
 import {useTheme} from "next-themes";
 import {useEffect, useState} from "react";
+import {MoonIcon, SunIcon} from "@heroicons/react/24/solid";
+import {Button} from "@/components/ui/button";
 
 export default function ThemeSwitcher() {
     const {theme, setTheme} = useTheme();
@@ -13,11 +15,14 @@ export default function ThemeSwitcher() {
     if (!mounted) return null;
 
     return (
-        <button
+        <Button
+
+            variant={"outline"}
+            size={"sm"}
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="p-2 rounded-lg bg-light-2 dark:bg-dark-4 text-black dark:text-white"
+
         >
-            {theme === "dark" ? "🌙 Dark" : "☀️ Light"}
-        </button>
+            {theme === "light" ? <MoonIcon/> : <SunIcon/>}
+        </Button>
     );
 }

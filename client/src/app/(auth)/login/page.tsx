@@ -1,8 +1,7 @@
 "use client"
 import Link from "next/link";
-import {useRouter} from 'next/navigation'
 import React from "react";
-import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {useMutation} from "@tanstack/react-query";
 import {googleSignIn, login} from "@/services/auth.sevices";
 import authStore from "@/store/auth.store";
 
@@ -21,9 +20,7 @@ function getErrorMessage(err: unknown): string {
 
 export default function Page() {
     //Access the client
-    const queryClient = useQueryClient()
-    const {setToken, setIsAuthenticated, setAuth} = authStore()
-    const router = useRouter();
+    const {setIsAuthenticated,} = authStore()
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
 

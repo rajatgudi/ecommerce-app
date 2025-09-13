@@ -6,17 +6,16 @@ const api = axios.create({
 
 //Attach tokens from zustand store
 api.interceptors.request.use(
+
     (config: any) => {
         try {
             // TODO: get real token from the auth store if needed
             const token = "";
             if (token !== "") {
-
-                const headers: AxiosRequestHeaders = {
+                config.headers = {
                     ...(config.headers as AxiosRequestHeaders),
                     Authorization: `Bearer ${token}`,
                 };
-                config.headers = headers;
             }
         } catch (e) {
             console.error(e);
