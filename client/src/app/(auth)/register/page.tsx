@@ -3,13 +3,11 @@ import Link from "next/link";
 import React from "react";
 import {useMutation} from "@tanstack/react-query";
 import {useForm} from "react-hook-form";
-import {registerUser} from "@/services/auth.service"
+import {registerUser} from "@/services/auth.sevices"
 import {zodResolver} from "@hookform/resolvers/zod";
-import {schema} from "@/validations/register.validation";
+import {schema} from "@/validations/register.validations";
 
 export default function Page() {
-
-
     //mutations
     const mutation = useMutation({
         mutationFn: registerUser,

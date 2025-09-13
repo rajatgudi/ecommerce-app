@@ -3,10 +3,10 @@
 import Link from "next/link";
 import React from "react";
 import {useMutation} from "@tanstack/react-query";
-import {resetPassword} from "@/services/auth.service";
+import {resetPassword} from "@/services/auth.sevices";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {schema} from "@/validations/reset-password.validation";
+import {schema} from "@/validations/reset-password.validations";
 
 export default function Page() {
     const token = "--------------"
